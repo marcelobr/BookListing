@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Book Listing</string>
+
+    <string name="search_message">Digite o título de um livro</string>
+
+    <!-- Text to display in the list when there are no books [CHAR LIMIT=NONE] -->
+    <string name="no_books">Nenhum livro encontrado.</string>
+
+    <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
+    <string name="no_internet_connection">Sem conexão de internet.</string>
+
+    <!-- Text to display in the list item when there is more than one author [CHAR LIMIT=7] -->
+    <string name="et_al">&#160;et al.</string>
+</resources>
