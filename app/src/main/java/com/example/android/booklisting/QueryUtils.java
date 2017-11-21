@@ -146,24 +146,23 @@ public class QueryUtils {
                 // for that book.
                 JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
 
-                String title = volumeInfo.getString("title");
+                String title = volumeInfo.optString("title");
 
                 JSONArray authorsArray = volumeInfo.getJSONArray("authors");
                 String[] authors = new String[authorsArray.length()];
-                for(int j = 0; j < authorsArray.length(); j++)
-                    authors[j] = authorsArray.getString(j);
+                for(int j = 0; j < authorsArray.length(); j++) {
+                    authors[j] = authorsArray.optString(j);
+                }
 
                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
 
-                String smallThumbnail = imageLinks.getString("smallThumbnail");
+                String smallThumbnail = imageLinks.optString("smallThumbnail");
 
-                String publisher = volumeInfo.getString("publisher");
+                String publisher = volumeInfo.optString("publisher");
 
-                String infoLink = volumeInfo.getString("infoLink");
+                String infoLink = volumeInfo.optString("infoLink");
 
-                Book book = new Book(title, smallThumbnail, authors, publisher, infoLink);
-
-                books.add(book);
+                books.add(new Book(title, smallThumbnail, authors, publisher, infoLink));
             }
 
         } catch (JSONException e) {
