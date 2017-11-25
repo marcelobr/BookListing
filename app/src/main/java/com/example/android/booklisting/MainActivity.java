@@ -21,24 +21,24 @@ public class MainActivity extends AppCompatActivity {
     /** Tag for the log messages */
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private static final String GOOGLE_BOOKS_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
-
     private BookAdapter mAdapter;
 
     /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
-    private View loadingIndicator;
+    private View mLoadingIndicator;
 
-    private NetworkInfo networkInfo;
+    private NetworkInfo mNetworkInfo;
+
+    private ConnectivityManager mConnMgr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadingIndicator = findViewById(R.id.loading_indicator);
-        loadingIndicator.setVisibility(View.GONE);
+        mLoadingIndicator = findViewById(R.id.loading_indicator);
+        mLoadingIndicator.setVisibility(View.GONE);
 
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) findViewById(R.id.search);
         searchView.setIconifiedByDefault(false);
@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                loadingIndicator = findViewById(R.id.loading_indicator);
-                loadingIndicator.setVisibility(View.VISIBLE);
+                mLoadingIndicator = findViewById(R.id.loading_indicator);
+                mLoadingIndicator.setVisibility(View.VISIBLE);
 
                 BookAsyncTask task = new BookAsyncTask();
-                task.execute(GOOGLE_BOOKS_REQUEST_URL + query.trim());
+                task.execute(query.trim());
                 return false;
             }
 
@@ -92,24 +92,27 @@ public class MainActivity extends AppCompatActivity {
         bookListView.setAdapter(mAdapter);
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
-        ConnectivityManager connMgr = (ConnectivityManager)
+        mConnMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        // Get details on the currently active default data network
-        networkInfo = connMgr.getActiveNetworkInfo();
     }
 
     private class BookAsyncTask extends AsyncTask<String, Void, List<Book>> {
+
+        private static final String GOOGLE_BOOKS_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+
         @Override
         protected List<Book> doInBackground(String... urls) {
             if (urls.length < 1 || urls[0] == null) {
                 return null;
             }
 
+            // Get details on the currently active default data network
+            mNetworkInfo = mConnMgr.getActiveNetworkInfo();
+
             // If there is a network connection, fetch data
-            if (networkInfo != null && networkInfo.isConnected()) {
+            if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
                 // Extract relevant fields from the JSON response and create an {@link Book} object
-                List<Book> book = QueryUtils.fetchBooksData(urls[0]);
+                List<Book> book = QueryUtils.fetchBooksData(GOOGLE_BOOKS_REQUEST_URL + urls[0]);
 
                 // Return the {@link Event} object as the result fo the {@link TsunamiAsyncTask}
                 return book;
@@ -121,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Book> books) {
-            loadingIndicator = findViewById(R.id.loading_indicator);
-            loadingIndicator.setVisibility(View.GONE);
+            mLoadingIndicator = findViewById(R.id.loading_indicator);
+            mLoadingIndicator.setVisibility(View.GONE);
 
             mAdapter.clear();
 
