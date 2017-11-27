@@ -32,10 +32,6 @@ public class Book {
         return authors;
     }
 
-    public String getPublisher() {
-        return publisher;
-    }
-
     public String getInfoLink() {
         return infoLink;
     }

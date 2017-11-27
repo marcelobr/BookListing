@@ -45,8 +45,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
         TextView authorTextView = (TextView) listItemView.findViewById(R.id.authors_text_view);
         if (currentBook.getAuthors().length > 1) {
             authorTextView.setText(currentBook.getAuthors()[0] + parent.getResources().getString(R.string.et_al));
-        }
-        else {
+        } else {
             authorTextView.setText(currentBook.getAuthors()[0]);
         }
 
