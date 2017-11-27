@@ -73,7 +73,6 @@ public class QueryUtils {
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            //urlConnection.setInstanceFollowRedirects(false);
             urlConnection.setReadTimeout(10000 /* milliseconds */);
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
             urlConnection.setRequestMethod("GET");
@@ -158,11 +157,9 @@ public class QueryUtils {
 
                 String smallThumbnail = imageLinks.optString("smallThumbnail");
 
-                String publisher = volumeInfo.optString("publisher");
-
                 String infoLink = volumeInfo.optString("infoLink");
 
-                books.add(new Book(title, smallThumbnail, authors, publisher, infoLink));
+                books.add(new Book(title, smallThumbnail, authors, infoLink));
             }
 
         } catch (JSONException e) {

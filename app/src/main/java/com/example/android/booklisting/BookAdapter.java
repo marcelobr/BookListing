@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by marcelo on 20/11/17.
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class BookAdapter extends ArrayAdapter<Book> {
 
-    public BookAdapter(@NonNull Context context, ArrayList<Book> books) {
+    public BookAdapter(@NonNull Context context, List<Book> books) {
         super(context, 0, books);
     }
 
@@ -33,10 +33,10 @@ public class BookAdapter extends ArrayAdapter<Book> {
         }
 
         Book currentBook = getItem(position);
-
         ImageView imageView = (ImageView) listItemView.findViewById(R.id.list_item_image);
         Glide.with(getContext())
                 .load(currentBook.getSmallThumbnail())
+                .error(R.drawable.image_error)
                 .into(imageView);
 
         TextView titleTextView = (TextView) listItemView.findViewById(R.id.title_text_view);

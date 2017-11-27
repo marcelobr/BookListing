@@ -9,14 +9,12 @@ public class Book {
     private String title;
     private String smallThumbnail;
     private String[] authors;
-    private String publisher;
     private String infoLink;
 
-    public Book(String title, String smallThumbnail, String[] authors, String publisher, String infoLink) {
+    public Book(String title, String smallThumbnail, String[] authors, String infoLink) {
         this.title = title;
         this.smallThumbnail = smallThumbnail;
         this.authors = authors;
-        this.publisher = publisher;
         this.infoLink = infoLink;
     }
 
